@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P2Dex — Modern Pokédex</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%231a6fc4'/%3E%3Crect x='3' y='43.5' width='94' height='13' fill='%230d1b2e'/%3E%3Ccircle cx='50' cy='50' r='47' fill='none' stroke='%230d1b2e' stroke-width='4' stroke-opacity='0.15'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23fff' stroke='%230d1b2e' stroke-width='3' stroke-opacity='0.15'/%3E%3Ccircle cx='50' cy='50' r='8' fill='%23e8e8e8'/%3E%3Ccircle cx='36' cy='30' r='5' fill='rgba(255,255,255,0.38)'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('p2dex-theme');
+        if (t) document.documentElement.setAttribute('data-theme', JSON.parse(t));
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/themes.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+<body>
+
+  <!-- ==========================================
+       LOADING SCREEN — Pokémon Style
+       ========================================== -->
+  <div id="loading-screen" class="loading-screen" aria-hidden="true">
+    <div class="ls-bg-grid"></div>
+    <div class="ls-content">
+
+      <!-- Animated Pokéball -->
+      <div class="ls-ball-wrap">
+        <svg class="ls-ball" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="47" fill="#1a6fc4" stroke="#111" stroke-width="3"/>
+          <rect x="3" y="43.5" width="94" height="13" fill="#111"/>
+          <circle cx="50" cy="50" r="47" fill="none" stroke="#111" stroke-width="3"/>
+          <circle cx="50" cy="50" r="15" fill="#fff" stroke="#111" stroke-width="3"/>
+          <circle cx="50" cy="50" r="8" fill="#ddd" stroke="#111" stroke-width="2"/>
+          <!-- shine -->
+          <circle cx="36" cy="30" r="5" fill="rgba(255,255,255,0.35)"/>
+        </svg>
+        <!-- Ring glow -->
+        <div class="ls-ball-ring"></div>
+      </div>
+
+      <!-- App name -->
+      <div class="ls-logo">
+        <span class="ls-logo-p">P</span><span class="ls-logo-two">2</span><span class="ls-logo-dex">Dex</span>
+      </div>
+      <p class="ls-tagline">Modern Pokédex</p>
+
+      <!-- Classic loading bar -->
+      <div class="ls-bar-wrap">
+        <div class="ls-bar-track">
+          <div class="ls-bar-fill" id="lsBarFill"></div>
+        </div>
+        <span class="ls-bar-label" id="lsBarLabel">Loading…</span>
+      </div>
+
+    </div>
+  </div>
+  <!-- END LOADING SCREEN -->
+
+  <!-- Sidebar Navigation (Desktop) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg class="brand-ball" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="47" fill="var(--accent)" stroke="var(--text-primary)" stroke-width="4" stroke-opacity="0.15"/>
+        <rect x="3" y="43.5" width="94" height="13" fill="var(--text-primary)" fill-opacity="1"/>
+        <circle cx="50" cy="50" r="47" fill="none" stroke="var(--text-primary)" stroke-width="4" stroke-opacity="0.15"/>
+        <circle cx="50" cy="50" r="15" fill="#fff" stroke="var(--text-primary)" stroke-width="3" stroke-opacity="0.15"/>
+        <circle cx="50" cy="50" r="8" fill="#e8e8e8"/>
+        <circle cx="36" cy="30" r="5" fill="rgba(255,255,255,0.35)"/>
+      </svg>
+      <span class="sidebar-logo-text">
+        <span class="sidebar-logo-full">P<span class="sidebar-logo-accent">2</span>Dex</span>
+        <span class="sidebar-logo-short">P<span class="sidebar-logo-accent">2</span>D</span>
+      </span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="home">
+        <i class="fa-solid fa-house-chimney"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item" data-page="pokedex">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Pokédex</span>
+      </a>
+      <a href="#" class="nav-item" data-page="teams">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Teams</span>
+      </a>
+      <a href="#" class="nav-item" data-page="compare">
+        <i class="fa-solid fa-arrows-left-right"></i>
+        <span>Compare</span>
+      </a>
+      <a href="#" class="nav-item" data-page="settings">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Sidebar overlay (tablet: closes expanded sidebar on outside click) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+
+    <!-- HOME PAGE -->
+    <section class="page active" id="page-home">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="homeGreeting">Hey, Trainer!</h1>
+          <p class="page-subtitle" id="homeSubtitle">Your Pokédex adventure awaits.</p>
+        </div>
+        <div class="header-search">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Quick search..." id="homeSearch" />
+        </div>
+      </div>
+
+      <!-- Daily Featured -->
+      <div class="featured-card" id="featuredCard">
+        <div class="featured-content">
+          <span class="featured-label">Featured Today</span>
+          <h2 class="featured-name" id="featuredName">Loading...</h2>
+          <p class="featured-desc" id="featuredDesc"></p>
+          <div class="featured-types" id="featuredTypes"></div>
+          <button class="btn-primary" id="featuredBtn">View Details</button>
+        </div>
+        <div class="featured-image-wrap">
+          <img src="" alt="" id="featuredImg" class="featured-img" />
+        </div>
+      </div>
+
+      <!-- Popular Section -->
+      <div class="section-header">
+        <h2 class="section-title">Popular Pokémon</h2>
+        <a href="#" class="section-link" data-page="pokedex">View all →</a>
+      </div>
+      <div class="pokemon-grid popular-grid" id="popularGrid"></div>
+
+      <!-- Quick Nav -->
+      <div class="quick-nav-grid">
+        <button class="quick-nav-card" data-page="pokedex">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Browse Pokédex</span>
+        </button>
+        <button class="quick-nav-card" data-page="teams">
+          <i class="fa-solid fa-users"></i>
+          <span>My Teams</span>
+        </button>
+        <button class="quick-nav-card" data-page="compare">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span>Compare</span>
+        </button>
+        <button class="quick-nav-card" id="favoritesQuickBtn">
+          <i class="fa-solid fa-heart"></i>
+          <span>Favorites</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- POKÉDEX PAGE -->
+    <section class="page" id="page-pokedex">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Pokédex</h1>
+          <p class="page-subtitle" id="pokedexCount">Loading Pokémon...</p>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="filters-bar">
+        <div class="search-wrap">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search Pokémon..." id="pokedexSearch" class="search-input" />
+        </div>
+        <div class="filter-row">
+          <select id="filterType" class="filter-select">
+            <option value="">All Types</option>
+          </select>
+          <select id="filterGen" class="filter-select">
+            <option value="">All Generations</option>
+            <option value="1">Gen I (1-151)</option>
+            <option value="2">Gen II (152-251)</option>
+            <option value="3">Gen III (252-386)</option>
+            <option value="4">Gen IV (387-493)</option>
+            <option value="5">Gen V (494-649)</option>
+            <option value="6">Gen VI (650-721)</option>
+            <option value="7">Gen VII (722-809)</option>
+            <option value="8">Gen VIII (810-905)</option>
+            <option value="9">Gen IX (906-1025)</option>
+          </select>
+          <div class="sort-wrap">
+            <select id="sortBy" class="filter-select">
+              <option value="id">Sort: ID</option>
+              <option value="name">Sort: Name</option>
+              <option value="hp">Sort: HP</option>
+              <option value="weight">Sort: Weight</option>
+              <option value="height">Sort: Height</option>
+              <option value="favorites">Sort: Favorites</option>
+            </select>
+            <button class="sort-dir-btn" id="sortDirBtn" aria-label="Toggle sort direction">
+              <i class="fa-solid fa-arrow-up-long" id="sortDirIcon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="pokemon-grid" id="pokedexGrid"></div>
+      <div class="load-more-wrap" style="display:none">
+        <button class="btn-outline" id="loadMoreBtn">Load More</button>
+      </div>
+      <div class="loading-spinner" id="pokedexSpinner">
+        <div class="spinner"></div>
+        <span>Loading Pokémon...</span>
+      </div>
+    </section>
+
+    <!-- TEAMS PAGE -->
+    <section class="page" id="page-teams">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Teams</h1>
+          <p class="page-subtitle">Build your perfect team of 6</p>
+        </div>
+        <button class="btn-primary" id="clearTeamBtn">
+          <i class="fa-solid fa-trash"></i> Clear Team
+        </button>
+      </div>
+
+      <div class="team-slots" id="teamSlots"></div>
+
+      <div class="team-add-section">
+        <h3>Add Pokémon to Team</h3>
+        <div class="search-wrap">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" placeholder="Search to add..." id="teamSearch" class="search-input" />
+        </div>
+        <div class="pokemon-grid team-search-grid" id="teamSearchGrid"></div>
+      </div>
+    </section>
+
+    <!-- COMPARE PAGE -->
+    <section class="page" id="page-compare">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Compare</h1>
+          <p class="page-subtitle">Head-to-head Pokémon comparison</p>
+        </div>
+      </div>
+
+      <div class="compare-pickers">
+        <div class="compare-picker" id="comparePicker1">
+          <div class="picker-empty" id="pickerEmpty1">
+            <i class="fa-solid fa-plus"></i>
+            <span>Select Pokémon</span>
+            <div class="search-wrap">
+              <input type="text" placeholder="Search..." id="compareSearch1" class="search-input" />
+            </div>
+            <div class="compare-search-results" id="compareResults1"></div>
+          </div>
+          <div class="picker-selected hidden" id="pickerSelected1">
+            <button class="picker-clear" data-slot="1"><i class="fa-solid fa-xmark"></i></button>
+            <img src="" alt="" id="compareImg1" />
+            <h3 id="compareName1"></h3>
+            <div class="compare-types" id="compareTypes1"></div>
+          </div>
+        </div>
+
+        <div class="vs-badge">VS</div>
+
+        <div class="compare-picker" id="comparePicker2">
+          <div class="picker-empty" id="pickerEmpty2">
+            <i class="fa-solid fa-plus"></i>
+            <span>Select Pokémon</span>
+            <div class="search-wrap">
+              <input type="text" placeholder="Search..." id="compareSearch2" class="search-input" />
+            </div>
+            <div class="compare-search-results" id="compareResults2"></div>
+          </div>
+          <div class="picker-selected hidden" id="pickerSelected2">
+            <button class="picker-clear" data-slot="2"><i class="fa-solid fa-xmark"></i></button>
+            <img src="" alt="" id="compareImg2" />
+            <h3 id="compareName2"></h3>
+            <div class="compare-types" id="compareTypes2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-table hidden" id="compareTable"></div>
+    </section>
+
+    <!-- SETTINGS PAGE -->
+    <section class="page" id="page-settings">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Settings</h1>
+          <p class="page-subtitle">Customize your experience</p>
+        </div>
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-group">
+          <h3 class="settings-group-title">Appearance</h3>
+          <div class="settings-item">
+            <div class="settings-item-info">
+              <span class="settings-item-label">Dark Mode</span>
+              <span class="settings-item-desc">Toggle between light and dark theme</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="darkModeToggle" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h3 class="settings-group-title">Data</h3>
+          <div class="settings-item">
+            <div class="settings-item-info">
+              <span class="settings-item-label">Favorites</span>
+              <span class="settings-item-desc" id="favCount">0 Pokémon saved</span>
+            </div>
+            <div class="settings-item-actions">
+              <button class="btn-view-sm" id="viewFavBtn">View</button>
+              <button class="btn-danger-sm" id="clearFavBtn">Clear</button>
+            </div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-info">
+              <span class="settings-item-label">Teams</span>
+              <span class="settings-item-desc" id="teamCount">0 Pokémon in team</span>
+            </div>
+            <button class="btn-danger-sm" id="clearTeamSettingsBtn">Clear</button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-info">
+              <span class="settings-item-label">API Cache</span>
+              <span class="settings-item-desc" id="cacheCount">0 entries cached</span>
+            </div>
+            <button class="btn-danger-sm" id="clearCacheBtn">Clear</button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-info">
+              <span class="settings-item-label">All Local Data</span>
+              <span class="settings-item-desc">Reset everything to default</span>
+            </div>
+            <button class="btn-danger" id="clearAllBtn">Reset All</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h3 class="settings-group-title">About</h3>
+          <div class="settings-about">
+            <div class="about-logo">
+              <svg class="brand-ball" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="50" cy="50" r="47" fill="var(--accent)" stroke="var(--text-primary)" stroke-width="4" stroke-opacity="0.15"/>
+                <rect x="3" y="43.5" width="94" height="13" fill="var(--text-primary)" fill-opacity="1"/>
+                <circle cx="50" cy="50" r="47" fill="none" stroke="var(--text-primary)" stroke-width="4" stroke-opacity="0.15"/>
+                <circle cx="50" cy="50" r="15" fill="#fff" stroke="var(--text-primary)" stroke-width="3" stroke-opacity="0.15"/>
+                <circle cx="50" cy="50" r="8" fill="#e8e8e8"/>
+                <circle cx="36" cy="30" r="5" fill="rgba(255,255,255,0.35)"/>
+              </svg>
+              <span class="about-logo-text">P<span class="sidebar-logo-accent">2</span>Dex</span>
+            </div>
+            <p>Modern Pokédex v1.0.0</p>
+            <p>Powered by <a href="https://pokeapi.co" target="_blank">PokéAPI</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="#" class="bottom-nav-item active" data-page="home">
+      <i class="fa-solid fa-house-chimney"></i>
+      <span>Home</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-page="teams">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Teams</span>
+    </a>
+    <a href="#" class="bottom-nav-item bottom-nav-center" data-page="pokedex">
+      <div class="bottom-nav-center-btn">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <span>Pokédex</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-page="compare">
+      <i class="fa-solid fa-arrows-left-right"></i>
+      <span>Compare</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-page="settings">
+      <i class="fa-solid fa-sliders"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <!-- Pokémon Detail Modal -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="pokemonModal">
+      <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="modal-header" id="modalHeader">
+        <div class="modal-header-info">
+          <span class="modal-number" id="modalNumber"></span>
+          <h2 class="modal-name" id="modalName"></h2>
+          <div class="modal-types" id="modalTypes"></div>
+        </div>
+        <img src="" alt="" id="modalImg" class="modal-img" />
+      </div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="about">About</button>
+        <button class="tab-btn" data-tab="stats">Stats</button>
+        <button class="tab-btn" data-tab="abilities">Abilities</button>
+        <button class="tab-btn" data-tab="evolution">Evolution</button>
+      </div>
+
+      <div class="modal-body" id="modalBody">
+        <!-- Tab content rendered by JS -->
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-outline" id="modalFavBtn"><i class="fa-regular fa-heart"></i> Add to Favorites</button>
+        <button class="btn-primary" id="modalTeamBtn"><i class="fa-solid fa-plus"></i> Add to Team</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Dialog Modal -->
+  <div class="confirm-overlay hidden" id="confirmOverlay">
+    <div class="confirm-modal" id="confirmModal">
+      <div class="confirm-icon" id="confirmIcon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="confirm-title" id="confirmTitle">Are you sure?</h3>
+      <p class="confirm-desc" id="confirmDesc"></p>
+      <div class="confirm-actions">
+        <button class="btn-outline confirm-cancel" id="confirmCancel">Cancel</button>
+        <button class="btn-danger confirm-ok" id="confirmOk">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script>
+    (function () {
+      const greetings = [
+        { range: [5, 11],  title: "Good morning, Trainer!",  sub: "A new day to catch 'em all." },
+        { range: [11, 14], title: "Keep it up, Trainer!",    sub: "Lunchtime — even champions need a break." },
+        { range: [14, 18], title: "Stay sharp, Trainer!",    sub: "Afternoon battles await you." },
+        { range: [18, 21], title: "Evening, Trainer!",       sub: "The wild Pokémon are active now." },
+        { range: [21, 24], title: "Night owl Trainer!",      sub: "Rare Pokémon come out after dark." },
+        { range: [0, 5],   title: "Still up, Trainer?",      sub: "Legendary Pokémon never sleep either." },
+      ];
+      const h = new Date().getHours();
+      const match = greetings.find(g => h >= g.range[0] && h < g.range[1]);
+      if (match) {
+        document.addEventListener('DOMContentLoaded', function () {
+          const t = document.getElementById('homeGreeting');
+          const s = document.getElementById('homeSubtitle');
+          if (t) t.textContent = match.title;
+          if (s) s.textContent = match.sub;
+        });
+      }
+    })();
+  </script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

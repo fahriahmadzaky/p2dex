@@ -1,0 +1,96 @@
+/* ==========================================
+   THEMES.CSS — P2Dex Theme Variables
+   Ocean Theme — Light & Dark
+   ========================================== */
+
+/* ==========================================
+   LIGHT MODE
+   ========================================== */
+
+:root,
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg-app:        #eef3f8;
+  --bg-card:       #ffffff;
+  --bg-card-hover: #f4f8fc;
+  --bg-sidebar:    #ffffff;
+  --bg-input:      #eef3f8;
+  --bg-modal:      #ffffff;
+  --bg-overlay:    rgba(10, 24, 46, 0.52);
+
+  /* Text */
+  --text-primary:   #0d1b2e;
+  --text-secondary: #4a5e78;
+  --text-muted:     #8fa3bc;
+  --text-on-accent: #ffffff;
+
+  /* Borders */
+  --border-color: #dae4ee;
+  --border-input: #ccd8e6;
+
+  /* Shadows */
+  --shadow-sm:         0 1px 4px rgba(13, 27, 46, 0.06);
+  --shadow-md:         0 4px 16px rgba(13, 27, 46, 0.09);
+  --shadow-lg:         0 8px 32px rgba(13, 27, 46, 0.13);
+  --shadow-card-hover: 0 8px 24px rgba(13, 27, 46, 0.15);
+
+  /* Accent — Ocean Blue */
+  --accent:      #1a6fc4;
+  --accent-soft: rgba(26, 111, 196, 0.10);
+  --accent-hover:#155da0;
+  --accent-rgb:  26, 111, 196;
+
+  /* Featured gradient */
+  --featured-gradient: linear-gradient(135deg, #0f4c8a 0%, #1a6fc4 55%, #3b9de8 100%);
+
+  /* Layout */
+  --sidebar-width:     220px;
+  --bottom-nav-height: 68px;
+
+  /* Z-index */
+  --z-sidebar:    100;
+  --z-navigation: 200;
+  --z-modal:      300;
+  --z-tooltip:    400;
+  --z-toast:      500;
+}
+
+/* ==========================================
+   DARK MODE
+   ========================================== */
+
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-app:        #090f1a;
+  --bg-card:       #111827;
+  --bg-card-hover: #182033;
+  --bg-sidebar:    #0d1521;
+  --bg-input:      #1a2537;
+  --bg-modal:      #111827;
+  --bg-overlay:    rgba(0, 0, 0, 0.72);
+
+  /* Text */
+  --text-primary:   #e8f0fa;
+  --text-secondary: #8aaac8;
+  --text-muted:     #4d6280;
+  --text-on-accent: #ffffff;
+
+  /* Borders */
+  --border-color: #1e2d42;
+  --border-input: #263347;
+
+  /* Shadows */
+  --shadow-sm:         0 1px 4px rgba(0, 0, 0, 0.35);
+  --shadow-md:         0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg:         0 8px 32px rgba(0, 0, 0, 0.55);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.55);
+
+  /* Accent — Ocean Blue (lifted for dark bg) */
+  --accent:      #4a9de8;
+  --accent-soft: rgba(74, 157, 232, 0.14);
+  --accent-hover:#6cb4f0;
+  --accent-rgb:  74, 157, 232;
+
+  /* Featured gradient */
+  --featured-gradient: linear-gradient(135deg, #0a2d5e 0%, #1a5ca8 55%, #2e82d4 100%);
+}
